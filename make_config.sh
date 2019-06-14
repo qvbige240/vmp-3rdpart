@@ -9,6 +9,7 @@ echo "BUILD_PATH: $BUILD_PATH "
 export zlog_SRC=${WORKDIR}/zlog-1.2.7
 export librtmp_SRC=${WORKDIR}/rtmpdump	#librtmp-2.4
 export libevent_SRC=${WORKDIR}/libevent-2.1.8-stable
+export libwebsock_SRC=${WORKDIR}/libwebsock
 
 export sqlite_SRC=${WORKDIR}/sqlite-autoconf-3190300
 export jansson_SRC=${WORKDIR}/jansson-2.10
@@ -109,6 +110,21 @@ function build_libevent()
     make install
 }
 
+function build_libwebsock()
+{
+    echo "#####################    Build libwebsock    #####################"
+    echo "   "
+    echo "cd ${BUILD_PATH}"
+    cd ${BUILD_PATH}
+    rm -rf *
+    cd ${libwebsock_SRC}
+    #${libwebsock_SRC}/autogen.sh
+    ${libwebsock_SRC}/configure --prefix=${FINAL_PATH} --host=$TARGETMACH
+    make
+    #    make verify
+    make install
+}
+
 function build_nanomsg()
 {
     echo "#####################    Build nanomsg   #####################"
@@ -125,10 +141,11 @@ function build_nanomsg()
     make install
 }
 
-build_jansson
+#build_jansson
 #build_zlog
 #build_librtmp
 #build_libevent
+build_libwebsock
 
 if false; then
 build_sqlite

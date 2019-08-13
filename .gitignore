@@ -1,0 +1,16 @@
+*~
+*tmp
+*bak
+*.swp
+*.db
+*.log
+build*
+
+*.lo
+*.la
+*.o.*
+*.a
+*.s
+*.ko
+*.so
+

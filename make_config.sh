@@ -32,6 +32,7 @@ function build_zlog()
 
 function build_librtmp()
 {
+    # modifed both Makefile and subdir/Makefile's prefix=/usr/local  to  prefix?=/usr/local
     echo "#####################    Build librtmp   #####################"
     echo "   "
     cd ${BUILD_PATH}
@@ -89,8 +90,8 @@ function build_curl()
     echo "cd ${BUILD_PATH}"
     cd ${BUILD_PATH}
     rm -rf *
-    #${curl_SRC}/configure --prefix=${FINAL_PATH} --host=$TARGETMACH --with-zlib
-    ${curl_SRC}/configure --prefix=${FINAL_PATH} --host=$TARGETMACH --without-zlib 
+    ${curl_SRC}/configure --prefix=${FINAL_PATH} --host=$TARGETMACH \
+        --without-zlib --without-librtmp --disable-symbol-hiding
     make
     make install
 }
@@ -145,7 +146,8 @@ function build_nanomsg()
 #build_zlog
 #build_librtmp
 #build_libevent
-build_libwebsock
+#build_libwebsock
+build_curl
 
 if false; then
 build_sqlite

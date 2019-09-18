@@ -1,10 +1,20 @@
 #!/bin/bash
 
+BUILDPF=
 WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo "WORKDIR: $WORKDIR "
 echo "BUILD_PATH: $BUILD_PATH "
+echo "FINAL_PATH: $FINAL_PATH "
 #echo "${BASH_SOURCE[0]}"
 #echo "$( dirname "${BASH_SOURCE[0]}" )"
+
+if [ ! "$1"x == x ]; then 
+    echo "$1"
+    BUILDPF=$1
+else
+    echo -e "\033[32m       platform unknown      \033[0m"
+    exit -1
+fi
 
 export zlog_SRC=${WORKDIR}/zlog-1.2.7
 export librtmp_SRC=${WORKDIR}/rtmpdump	#librtmp-2.4
@@ -16,6 +26,8 @@ export jansson_SRC=${WORKDIR}/jansson-2.10
 export curl_SRC=${WORKDIR}/curl-7.52.1
 
 export nanomsg_SRC=${WORKDIR}/nanomsg-1.0.0
+
+export vpk_SRC=${WORKDIR}/vpk
 
 # the include file of zlog needed attention
 function build_zlog()
@@ -142,12 +154,26 @@ function build_nanomsg()
     make install
 }
 
+function build_vpk()
+{
+    echo "#####################    Build vpk   #####################"
+    echo "   "
+    echo "cd ${BUILD_PATH}"
+    cd ${BUILD_PATH}
+    rm -rf *
+    ${vpk_SRC}/configure --prefix=${FINAL_PATH} --host=$TARGETMACH \
+        platform=$BUILDPF
+    make
+    make install
+}
+
 #build_jansson
 #build_zlog
 #build_librtmp
 #build_libevent
 #build_libwebsock
-build_curl
+#build_curl
+build_vpk
 
 if false; then
 build_sqlite
